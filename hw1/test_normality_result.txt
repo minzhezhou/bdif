@@ -1,0 +1,9 @@
+Mean:1.56347e-05
+Stderr:0.00237288
+Sample size:179901
+AD statistic = 70988.2
+P value = 1e-05
+Normality can be rejected at significance level 1e-05
+
+
+
