@@ -87,6 +87,10 @@ int main(int argc, char **argv){
     using duration = std::chrono::duration<double, std::milli>;
     std::stringstream ss;
     char* fname = argv[1];
+    if (!fname) {
+        std::cout << "input file name is null!\n";
+        return 0;
+    }
     MPI_File fh;
     MPI_Status status;
     MPI_Init(&argc, &argv);
