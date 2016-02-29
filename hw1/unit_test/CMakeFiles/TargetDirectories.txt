@@ -1,3 +1,0 @@
-/home/mzhou/workspace/mh9898/hw1/unit_test/CMakeFiles/mpi_rw_test.dir
-/home/mzhou/workspace/mh9898/hw1/unit_test/CMakeFiles/split_str_test.dir
-/home/mzhou/workspace/mh9898/hw1/unit_test/CMakeFiles/timer_test.dir
