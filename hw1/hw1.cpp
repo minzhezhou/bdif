@@ -37,6 +37,7 @@ int mpi_group_read(char const* fname, char* &buf, int rank, int nodes) {
         std::cout << "file open error, mpi_fopen ret:" << ret << std::endl;
     }
     ret = MPI_File_get_size(fh, &file_sz);
+    samp_ratio = std::min(1000000000.0/double(file_sz), 1.0);
     std::cout << "mpi_file_sz ret:" << ret << " file size:" << file_sz << std::endl;
     //LOG(INFO) << "mpi_file_sz ret:" << ret << " file size:" << file_sz << std::endl;
     long long tmp_sz = file_sz / nodes;
@@ -83,6 +84,7 @@ int mpi_group_write(char const* fname,char* wbuf, long long wsz, int rank, int n
 
 int main(int argc, char **argv){
     //google::InitGoogleLogging(argv[0]);
+    std::srand(std::time(0)); // use current time as seed for random generator
     using clock = std::chrono::system_clock;
     using duration = std::chrono::duration<double, std::milli>;
     std::stringstream ss;

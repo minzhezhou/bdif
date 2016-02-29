@@ -4,6 +4,7 @@
 using string = std::string;
 
 double Max_Price = 0, Max_Volume = 0;
+double samp_ratio = 1;
 static timer gtimer;
 
 struct rec {
@@ -73,6 +74,12 @@ struct rec_parser {
     }
 
     int double_check(int idx, std::vector<rec>& vrec) {
+        if (samp_ratio < 1) {
+            int random_variable = std::rand() % 10000;
+            if (random_variable > samp_ratio * 10000) {
+                return 0;
+            }
+        }
         float vn = 0, wn = 0, tn = 0;
         int n = idx + 10;
         if (n <= vrec.size()) {
