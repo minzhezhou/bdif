@@ -33,10 +33,12 @@ int mpi_group_read(char const* fname, char* &buf, int rank, int nodes) {
     MPI_Status status;
 	MPI_Offset file_sz;
     int ret = MPI_File_open(MPI_COMM_WORLD, fname, MPI_MODE_RDONLY, MPI_INFO_NULL, &fh);
-    CHECK(0 == ret)  << "file open error, mpi_fopen ret:" << ret << std::endl;
+    if(0 != ret)  {
+        std::cout << "file open error, mpi_fopen ret:" << ret << std::endl;
+    }
     ret = MPI_File_get_size(fh, &file_sz);
-    //std::cout << "mpi_file_sz ret:" << ret << " file size:" << file_sz << std::endl;
-    LOG(INFO) << "mpi_file_sz ret:" << ret << " file size:" << file_sz << std::endl;
+    std::cout << "mpi_file_sz ret:" << ret << " file size:" << file_sz << std::endl;
+    //LOG(INFO) << "mpi_file_sz ret:" << ret << " file size:" << file_sz << std::endl;
     long long tmp_sz = file_sz / nodes;
     long long read_cnt = rank==nodes-1 ? file_sz - (nodes-1)*tmp_sz : tmp_sz;
     std::cout << "rank is:" << rank << " nodes number is:" << nodes << " read from " << rank * tmp_sz 
@@ -80,7 +82,7 @@ int mpi_group_write(char const* fname,char* wbuf, long long wsz, int rank, int n
 }
 
 int main(int argc, char **argv){
-    google::InitGoogleLogging(argv[0]);
+    //google::InitGoogleLogging(argv[0]);
     using clock = std::chrono::system_clock;
     using duration = std::chrono::duration<double, std::milli>;
     std::stringstream ss;
@@ -97,7 +99,11 @@ int main(int argc, char **argv){
     auto start_read = clock::now();
     int ret = mpi_group_read(fname, buf, rank, nodes);
     auto finish_read = clock::now();
-    CHECK(ret==0) << "Mpi read file error";
+    //CHECK(ret==0) << "Mpi read file error";
+    if (0 != ret) {
+        std::cout << "Mpi read file error";
+        return 0;
+    }
 
     ss << get_time() << "Rank:" << rank << " finished reading...\n";
     auto diff = finish_read-start_read;

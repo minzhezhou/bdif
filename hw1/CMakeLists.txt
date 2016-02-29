@@ -1,8 +1,9 @@
 cmake_minimum_required(VERSION 2.6)
+
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}")
 SET(CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} ${GCC_COVERAGE_COMPILE_FLAGS}" )
-SET(GCC_COVERAGE_LINK_FLAGS "-pthread -Wl,-rpath -Wl,/home/mzhou/mylib/openmpi/lib -Wl,--enable-new-dtags -L/home/mzhou/mylib/openmpi/lib -lmpi_cxx -lmpi -lopen-rte -lopen-pal -lutil -lnsl -ldl -lmca_common_sm -lvt -Wl,--export-dynamic -L lib")
+#SET(GCC_COVERAGE_LINK_FLAGS "-pthread -Wl,-rpath -Wl,/home/mzhou/mylib/openmpi/lib -Wl,--enable-new-dtags -L/home/mzhou/mylib/openmpi/lib -lmpi_cxx -lmpi -lopen-rte -lopen-pal -lutil -lnsl -ldl -lmca_common_sm -lvt -Wl,--export-dynamic -L lib")
 SET( CMAKE_EXE_LINKER_FLAGS  "${CMAKE_EXE_LINKER_FLAGS} ${GCC_COVERAGE_LINK_FLAGS}" )
 
 PROJECT(option)
