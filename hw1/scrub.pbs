@@ -1,0 +1,15 @@
+#!/bin/bash
+
+#PBS -N mpihello
+#PBS -l select=4:ncpus=1,walltime=0:02:00
+#PBS -l place=free
+#PBS -V
+#PBS -q development
+
+cd $PBS_O_WORKDIR
+
+echo -n ">>>> PBS Master compute node is: "
+hostname
+echo ""
+
+GLOG_logtostderr=1 mpirun -np 4  a.out small 2>&1
