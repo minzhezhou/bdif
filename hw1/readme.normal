@@ -1,0 +1,9 @@
+The normality test task is combined with the scrub, use the same binary to run this task.
+
+The testing method is Anderson Darling test.
+
+To implement this test, I need to caculate the ad statistic, it's a sum of items which can be calculate from the index and value of the asset-return variable.
+
+The problem here is that, when there are too many records, the sum may overfill the double variable. So I sample the asset-return variable to make the sample not too big. The sample ratio I choose is related to the size of the input file, when the file is bigger, I use a smaller sample ratio.
+
+

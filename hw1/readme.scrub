@@ -1,0 +1,16 @@
+The scruber is designed to run on MPI.
+
+1. Reading file
+It get the file size, then decompose the task, let every node read parts of the file using MPI_file_read_at.
+
+2. Scrubing file
+On every node, for every line read in, parse it to get the timestamp, price, volume. The strategy is that:
+a. For each line, if price > MAX_price or price < Min_price or volume > Max_volume or volume < Min_volume,   regard it as noise.
+b. For every line has valid price and volume, if it's timestamp is close enough(2s) to the previous valid timestamp, accept it. Otherwise check the next 10 lines timestamp, if more than 7 of them have timestamp close enough to it, accept it.(This means the time changed to another day) Otherwise put it into noise.
+It can be proved that this stategy is almost correct, and it's very fast, in most situation, it only focus on the current line, so it pass the data only once.
+
+3. Writing file
+On every node, calculate the size of content need to write. Allgather the size from everynode, so that everynode knows the offset to start its own writing.
+
+4. Logging
+As for compiling issues, I can't use glog, so I write all the logs into a file. For memory usage tracking, I used the free command. In order to use this command while the scrub is running, I use a popen to open a pipe, so that the returned info can be read from the pipe.

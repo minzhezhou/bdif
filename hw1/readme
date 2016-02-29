@@ -1,0 +1,7 @@
+compile:
+make
+
+run:
+qsub scrub.pbs
+
+before running, the input filename in scrub.pbs must be modified
