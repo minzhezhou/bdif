@@ -14,3 +14,8 @@ On every node, calculate the size of content need to write. Allgather the size f
 
 4. Logging
 As for compiling issues, I can't use glog, so I write all the logs into a file. For memory usage tracking, I used the free command. In order to use this command while the scrub is running, I use a popen to open a pipe, so that the returned info can be read from the pipe.
+
+5. output
+The signal is saved as signal.txt
+The noise is saved as noise.txt
+The log file is saved as scrub_log.txt

@@ -2,8 +2,11 @@ The normality test task is combined with the scrub, use the same binary to run t
 
 The testing method is Anderson Darling test.
 
-To implement this test, I need to caculate the ad statistic, it's a sum of items which can be calculate from the index and value of the asset-return variable.
+To implement this test, I need to caculate the ad statistic, it's a sum of items which can be calculate from the index and value of the asset-return variable. The summation is done on every node, before doing that, using a MPI_allgather to get the size of the sample size on every node, so that every node knows their samples index offset.
 
-The problem here is that, when there are too many records, the sum may overfill the double variable. So I sample the asset-return variable to make the sample not too big. The sample ratio I choose is related to the size of the input file, when the file is bigger, I use a smaller sample ratio.
+The main problem here is that, when there are too many records, the sum may overfill the double variable. So I sample the asset-return variable to make the sample not too big. The sample ratio I choose is related to the size of the input file, when the file is bigger, I use a smaller sample ratio.
 
+Another issue is that for some outlier asset-return value, it makes the ad statitc infinity, so I set a theshold to make sure they won't mess the test.
 
+output file:
+The result is saved as test_normality_result.txt

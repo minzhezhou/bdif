@@ -1,7 +1,10 @@
 compile:
+module load g++/4.7
+module unload openmpi
+module load openmpi/1.8.4_gcc
 make
 
 run:
+#before running, the input filename in scrub.pbs must be modified
 qsub scrub.pbs
 
-before running, the input filename in scrub.pbs must be modified
