@@ -19,3 +19,4 @@ As for compiling issues, I can't use glog, so I write all the logs into a file. 
 The signal is saved as signal.txt
 The noise is saved as noise.txt
 The log file is saved as scrub_log.txt
+The memory usage info is saved in scrub.oxxxx, xxxx is the task id.
