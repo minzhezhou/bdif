@@ -1,0 +1,55 @@
+0. file list
+    config.q : this is the global config file for the program
+    hw2.q : this is the source code
+    symbol: this is the input of the generator, it gives the 
+            parameter of stocks, their symbol, drift,
+            volotility, initial price, trading intensity
+
+1. configuration
+    The program can be configured in config.q and symbol.
+    config.q : 
+            script_path: this is vital for reading from and 
+                writing into current dir.
+            trading_days: generate how many days data
+            bar_interval: time interval for calculating volume
+            powerlaw_alpha, powerlaw_beta:
+            They control the shape of the powerlaw distribution
+            for generating trading size. 
+    symbol:
+            drift: the average annual return for the stock
+            sigma: annually volotility
+            intensity: average daily trading times, this controls
+                the timestamp step for the generated series.
+            start_date: initial datetime for generating
+            price: initial price for generating
+
+    Note that, for generating big data, increase the intensity 
+    in symbol or increase trading_days in config.q
+
+2. data generating
+    The trading data are generated for each stock in the symbol.
+    a. Time stamp and price, the time stamp follows a possion 
+        process and the price follows a geometric brownian motion
+        process, this two series are generated togather.
+    b. Volume, it is generated from a powerlaw distribution
+
+3. volume_bar calculating
+    As we want to calculate VWAP at diffrent time scale, we have
+    to calculate trading volume in different time window. For this 
+    goal, my program generate time grid of different scale. Then 
+    join the grid with the trading data, and calculate the volume bar
+
+4. VWAP calculating
+    There are existing formular for this step. My program calculate
+    the ema of price*volume, then the ema of volume, the vwap can be
+    calculated by ema(price*volume)./ema(volume)
+
+5. Running
+    Make sure the configure in config.q are correct. In terminal:
+    q hw2.q
+    Then the result are generated in the working dir.
+    
+6. Result 
+    XX.in.csv:  these are the raw trading data generated, XX is the
+            symbol for the stock
+    XX.out.csv: these are the result of volume bar and VWAP            
