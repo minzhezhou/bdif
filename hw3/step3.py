@@ -23,7 +23,7 @@ def extract_feature(content):
       res[2*stid] = res[2*stid] / (1.0+len(col))
       res[1+2*stid] = res[1+2*stid] / (1.0+len(col))
       if res[2*stid] == 0 and res[2*stid] == 0:
-        res[2*stid] = random.random()/10
+        res[2*stid] = random.random()
       ret = " ".join([str(x) for x in res])
     return str(retval) + " " + ret
   return work(content, sentimentdic)
