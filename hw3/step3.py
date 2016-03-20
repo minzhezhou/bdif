@@ -1,40 +1,45 @@
 import os
+import random
 import sys
 from pyspark import SparkConf, SparkContext
 from pyspark.sql import SQLContext
 APP_NAME = "My Spark Application"
 
+stock_cnt = 9
 sentimentdic = {}
 def extract_feature(content):
   def work(content, dic):
-    col = contetn.split(" ")
-    res = [0.0,0.0]
+    coll = content.split("\t")
+    col = coll[3].split(" ")
+    retval = coll[2]
+    stid = int(coll[1])
+    res = [0.0, 0.0] * stock_cnt
     for w in col:
       if sentimentdic.has_key(w.lower()):
         if sentimentdic[w.lower()] == 1:
-          res[0] = res[0] +1
+          res[2*stid] = res[2*stid] +1
         if sentimentdic[w.lower()] == -1:
-          res[1] = res[1] + 1
-    res[0] = res[0] / (1.0+len(col))      
-    res[1] = res[1] / (1.0+len(col))      
-  work(content, sentimentdic)
+          res[1+2*stid] = res[1+2*stid] + 1
+      res[2*stid] = res[2*stid] / (1.0+len(col))
+      res[1+2*stid] = res[1+2*stid] / (1.0+len(col))
+      if res[2*stid] == 0 and res[2*stid] == 0:
+        res[2*stid] = random.random()/10
+      ret = " ".join([str(x) for x in res])
+    return str(retval) + " " + ret
+  return work(content, sentimentdic)
 
 
 if __name__=="__main__":
   conf = SparkConf().setAppName(APP_NAME)
   conf = conf.setMaster("local[*]")
   sc = SparkContext(conf=conf)
-  retdata = sc.textFile(st_ret);
-  twsdata = sc.textFile(tws_info);
+  twsdata = sc.textFile("step2");
  
-  sentimentdic_src = sc.textFile(words_dic);
-  for p in sentimentdic.collect():
+  sentimentdic_src = sc.textFile("word_dic");
+  for p in sentimentdic_src.collect():
     cols = p.split("\t")
     sentimentdic[cols[0]] = cols[1]
 
-  rdd1=rdd.flatMap(mapp)
-  print rdd1.count()
-  rdd1.saveAsTextFile("tws4")
-  #df1=sc.parallelize(fr.collect()).saveAsTextFile("tweets/2013.txt")
-  #df1.write.save("tweets2/2013.txt",format="text")
-  #print df1
+  res=twsdata.map(extract_feature)
+  print res.count()
+  res.saveAsTextFile("step3")
