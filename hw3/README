@@ -55,11 +55,17 @@
             extract useful tweets json file into textfile, it judges if a file is related 
             to a certain stock
         step2:
-            It combine stock ret with tweets by date and stockid
+            It combine stock ret with tweets by date and stockid, 
+            so that the tweets info are associated with its related stocks later return
         step3:
-            It extracts feature from the tweets content
+            It extracts feature from the tweets content, I only use the ratio of good words
+            and bad words as feature, although many other feature can be used. 
+            If the feature size is M, and there are N stock, the feature vector length is N*M
+            For example if there are 5 stock, every stock has 2 feature, an instance is like:
+            0.0015 \t 0, 0, 0.032, 0.001, 0, 0, 0, 0
+            0.0015 is return, this stockid is 1, so 0.032, 0.001 locates at 2,3 in the vector
         step4:
-            It trains a linear model
+            It trains a linear model on the instances from last step
 
     prediction:            
         step1:
