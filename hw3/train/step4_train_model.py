@@ -28,3 +28,5 @@ if __name__=="__main__":
   valuesAndPreds = train_data.map(lambda p: (p.label, model.predict(p.features)))
   train_res = valuesAndPreds.map(lambda (v, p): (v - p)**2).reduce(lambda x, y: x + y) / valuesAndPreds.count()
   train_res.saveAsTextFile("step4")
+  model_param = sc.parallelize([str(x) for x in model.coefficients])
+  model_param.saveAsTextFile("model_param")

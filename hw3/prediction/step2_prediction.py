@@ -4,7 +4,7 @@ import random
 import sys
 from pyspark import SparkConf, SparkContext
 from pyspark.sql import SQLContext
-APP_NAME = "sentiment_regression"
+APP_NAME = "prediction"
 stock_cnt = 9
 
 # Load and parse the data
@@ -18,13 +18,12 @@ if __name__=="__main__":
   conf = conf.setMaster("local[*]")
   sc = SparkContext(conf=conf)
 
-  data = sc.textFile("step3")
-  train_data = data.map(parsePoint)
+  model_param = sc.textFile("model_param")
+  pred_data = sc.textFile("pred_input")
 
   # Build the model
-  model = LinearRegressionWithSGD.train(train_data,100,0.1)
+  model = LinearRegressionWithSGD.setModel(model_param)
 
   # Evaluate the model on training data
-  valuesAndPreds = train_data.map(lambda p: (p.label, model.predict(p.features)))
-  train_res = valuesAndPreds.map(lambda (v, p): (v - p)**2).reduce(lambda x, y: x + y) / valuesAndPreds.count()
-  train_res.saveAsTextFile("step4")
+  pred_res = pred_data.map(lambda fea: model.predict(fea))
+  pred_res.saveAsTextFile("pred_res")

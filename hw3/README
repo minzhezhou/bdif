@@ -1,0 +1,71 @@
+1.File list
+    train:
+        run_train.sh
+            launch the model trainning process on spark
+        gen_sentiment_dic.py
+            generate word sentiment dictionary
+        yahoo_quotes.py
+            get stock return info from spark
+        step1_get_tweets_info.py
+            extract useful tweets json file into textfile
+        step2_join_stock_ret_with_tweets.py
+            combine stock ret with tweets by date and stockid
+        step3_extract_feature.py
+            extract feature from the tweets content
+        step4_train_model.py
+            training a linear model
+
+    prediction:
+        run_prediction.sh
+            launch the prediction process on spark
+        step1_gen_pred_input.py
+            generate predction data from tweets info
+        step2_prediction.py
+            load the trained model and make prediction on the input tweet info
+
+    data:
+        small sample of data from hdfs
+        train:
+            step1:
+                file format:    date \t stockid \t  [tweet_info]
+            step2:
+                file format:    date \t stockid \t  stock_ret \t [tweet_info]
+            step3:
+                file format:    ret \t [0,0.....fea_i_j,....0,0]
+            step4:
+                file format:    model_param1, model_param2, ....model_paramN
+        pred:
+            step1:
+                file format:    stockid \t [0,0.....fea_i_j,....0,0]
+            step2:
+                file format:    stockid \t predicted_ret
+                
+2. how to run
+    There are trainning parts and prediction parts in this package
+    bash run_train.sh  starts trainning on spark
+    bash run_prediction.sh starts prediction on spark
+
+3. the detailed process
+    train:
+        Although all the process can merged into one program for efficiency, 
+        I split it into several step, so that I can check if every step is correct,
+        and I can have the in-process product.
+
+        step1:
+            extract useful tweets json file into textfile, it judges if a file is related 
+            to a certain stock
+        step2:
+            It combine stock ret with tweets by date and stockid
+        step3:
+            It extracts feature from the tweets content
+        step4:
+            It trains a linear model
+
+    prediction:            
+        step1:
+            Extract tweets json file into textfile and extract feature from it 
+        step2:
+            Load the model from trainning and make prediction on the prediction data
+
+            
+            
